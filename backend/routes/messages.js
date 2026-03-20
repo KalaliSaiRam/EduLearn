@@ -113,11 +113,11 @@ router.post('/', async (req, res) => {
         }
 
         const [result] = await db.execute(
-            `INSERT INTO messages (sender_email, receiver_email, message_text) VALUES (?, ?, ?)`,
+            `INSERT INTO messages (sender_email, receiver_email, message_text) VALUES (?, ?, ?) RETURNING id`,
             [senderEmail, receiver_email, message_text.trim()]
         );
 
-        const [newMsg] = await db.execute('SELECT * FROM messages WHERE id = ?', [result.insertId]);
+        const [newMsg] = await db.execute('SELECT * FROM messages WHERE id = ?', [result[0].id]);
 
         res.json({ success: true, message: newMsg[0] });
     } catch (err) {

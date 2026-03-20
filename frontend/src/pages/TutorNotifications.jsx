@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Layout from '../components/Layout';
 import './Notifications.css';
+import API_BASE from '../config';
 
 const TutorNotifications = () => {
   const [requests, setRequests] = useState([]);
@@ -23,7 +24,7 @@ const TutorNotifications = () => {
         return;
       }
 
-      const res = await axios.get('http://localhost:5000/api/tutor/notifications', {
+      const res = await axios.get(`${API_BASE}/api/tutor/notifications`, {
         headers: { 'x-auth-token': token }
       });
 
@@ -40,7 +41,7 @@ const TutorNotifications = () => {
   const handleAction = async (requestId, actionType) => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.post('http://localhost:5000/api/tutor/notifications/action', 
+      const res = await axios.post(`${API_BASE}/api/tutor/notifications/action`, 
         { request_id: requestId, action: actionType },
         { headers: { 'x-auth-token': token } }
       );

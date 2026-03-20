@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import './Profile.css';
+import API_BASE from '../config';
 
 const TutorProfile = () => {
   const [profile, setProfile] = useState(null);
@@ -17,7 +18,7 @@ const TutorProfile = () => {
   const fetchProfile = async () => {
     try {
       if (!token) { navigate('/login'); return; }
-      const res = await fetch('http://localhost:5000/api/profile/tutor', {
+      const res = await fetch(`${API_BASE}/api/profile/tutor`, {
         headers: { 'x-auth-token': token }
       });
       if (!res.ok) throw new Error('Failed to fetch');
@@ -45,7 +46,7 @@ const TutorProfile = () => {
       if (payload.hourly_rate) payload.hourly_rate = parseFloat(payload.hourly_rate);
       if (payload.experience_years) payload.experience_years = parseInt(payload.experience_years);
 
-      const res = await fetch('http://localhost:5000/api/profile/tutor', {
+      const res = await fetch(`${API_BASE}/api/profile/tutor`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'x-auth-token': token },
         body: JSON.stringify(payload)
@@ -55,7 +56,7 @@ const TutorProfile = () => {
         if (form.address !== profile.address || form.pincode !== profile.pincode) {
           setGeocoding(true);
           try {
-            await fetch('http://localhost:5000/api/geocode/update-my-location', {
+            await fetch(`${API_BASE}/api/geocode/update-my-location`, {
               method: 'POST', headers: { 'Content-Type': 'application/json', 'x-auth-token': token }
             });
           } catch (e) { /* non-blocking */ }
@@ -105,15 +106,15 @@ const TutorProfile = () => {
         ) : profile ? (
           <div className="profile-card">
             {/* Cover + Avatar */}
-            <div className="profile-cover" style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #7c3aed 100%)' }}>
+            <div className="profile-cover">
               <div className="profile-avatar-container">
-                <div className="profile-avatar" style={{ background: '#7c3aed', border: '4px solid var(--bg-card)' }}>
+                <div className="profile-avatar">
                   {profile.name?.charAt(0).toUpperCase()}
                 </div>
               </div>
               <div className="profile-actions">
                 {!editing ? (
-                  <button className="btn btn-primary btn-sm" onClick={() => setEditing(true)} style={{ background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.3)' }}>
+                  <button className="btn btn-primary btn-sm profile-edit-btn" onClick={() => setEditing(true)}>
                     <i className="fas fa-pen"></i> Edit Profile
                   </button>
                 ) : (
@@ -128,16 +129,17 @@ const TutorProfile = () => {
             </div>
 
             <div className="profile-body">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
-                <h2 className="profile-name" style={{ marginBottom: 0 }}>{profile.name}</h2>
-                <span className="badge badge-primary" style={{ fontSize: '0.75rem' }}>{profile.type}</span>
+              <div className="profile-header-main">
+                <h2 className="profile-name">{profile.name}</h2>
+                <span className="badge badge-primary">{profile.type}</span>
               </div>
               <div className="profile-role">
                 <i className="fas fa-chalkboard-teacher"></i> {profile.subject || 'Tutor'}
                 {profile.rating > 0 && (
-                  <span style={{ marginLeft: '1rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                    {renderStars(profile.rating)} <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>({profile.total_reviews || 0})</span>
-                  </span>
+                  <div className="rating-stars">
+                    {renderStars(profile.rating)}
+                    <span className="rating-count">({profile.total_reviews || 0})</span>
+                  </div>
                 )}
               </div>
 
@@ -172,7 +174,7 @@ const TutorProfile = () => {
                   <textarea rows={3} value={form.bio} onChange={e => setForm({...form, bio: e.target.value})}
                     placeholder="Tell students about your teaching style, experience, and qualifications..." className="profile-edit-input" />
                 ) : (
-                  <p style={{ color: profile.bio ? 'var(--text-main)' : 'var(--text-light)', fontStyle: profile.bio ? 'normal' : 'italic', fontSize: '0.95rem', lineHeight: 1.6 }}>
+                  <p className={`profile-bio-text ${!profile.bio ? 'empty' : ''}`}>
                     {profile.bio || 'No bio yet. Click "Edit Profile" to add one!'}
                   </p>
                 )}
@@ -272,8 +274,8 @@ const TutorProfile = () => {
               </div>
 
               {/* Verified Banner */}
-              <div className="assigned-tutor-banner" style={{ background: 'rgba(124, 58, 237, 0.08)', borderColor: 'rgba(124, 58, 237, 0.2)' }}>
-                <div className="tutor-banner-icon" style={{ color: 'var(--primary)' }}><i className="fas fa-shield-alt"></i></div>
+              <div className="assigned-tutor-banner verified">
+                <div className="tutor-banner-icon"><i className="fas fa-shield-alt"></i></div>
                 <div className="tutor-banner-content">
                   <h4>Verified {profile.type} Tutor</h4>
                   <p>Your profile is visible to students searching for tutors in your area.</p>

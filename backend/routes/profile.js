@@ -22,7 +22,7 @@ router.get('/student', async (req, res) => {
 
         const sql = `
             SELECT 
-                sl.name, sl.email, sl.phone, sl.class, sl.gender,
+                sl.name, sl.email, sl.phone, sl."class", sl.gender,
                 sl.address, sl.city, sl.pincode, sl.bio, sl.avatar_url,
                 sl.latitude, sl.longitude,
                 tl.name AS teacher_name,
@@ -58,21 +58,23 @@ router.put('/student', async (req, res) => {
         const { phone, address, city, pincode, bio, latitude, longitude } = req.body;
         const updates = [];
         const values = [];
+        let paramIndex = 1;
 
-        if (phone) { updates.push('phone = ?'); values.push(phone); }
-        if (address) { updates.push('address = ?'); values.push(address); }
-        if (city) { updates.push('city = ?'); values.push(city); }
-        if (pincode) { updates.push('pincode = ?'); values.push(pincode); }
-        if (bio !== undefined) { updates.push('bio = ?'); values.push(bio); }
-        if (latitude !== undefined) { updates.push('latitude = ?'); values.push(latitude); }
-        if (longitude !== undefined) { updates.push('longitude = ?'); values.push(longitude); }
+        if (phone) { updates.push(`phone = $${paramIndex++}`); values.push(phone); }
+        if (address) { updates.push(`address = $${paramIndex++}`); values.push(address); }
+        if (city) { updates.push(`city = $${paramIndex++}`); values.push(city); }
+        if (pincode) { updates.push(`pincode = $${paramIndex++}`); values.push(pincode); }
+        if (bio !== undefined) { updates.push(`bio = $${paramIndex++}`); values.push(bio); }
+        if (latitude !== undefined) { updates.push(`latitude = $${paramIndex++}`); values.push(latitude); }
+        if (longitude !== undefined) { updates.push(`longitude = $${paramIndex++}`); values.push(longitude); }
 
         if (updates.length === 0) {
             return res.status(400).json({ msg: 'No fields to update' });
         }
 
         values.push(req.user.email);
-        await pool.query(`UPDATE student_login SET ${updates.join(', ')} WHERE email = ?`, values);
+        const pool = require('../db');
+        await pool.query(`UPDATE student_login SET ${updates.join(', ')} WHERE email = $${paramIndex}`, values);
 
         res.json({ success: true, message: 'Profile updated.' });
     } catch (err) {
@@ -114,23 +116,25 @@ router.put('/tutor', async (req, res) => {
         const { phone, address, pincode, bio, hourly_rate, experience_years, latitude, longitude, subject } = req.body;
         const updates = [];
         const values = [];
+        let paramIndex = 1;
 
-        if (phone) { updates.push('phone = ?'); values.push(phone); }
-        if (address) { updates.push('address = ?'); values.push(address); }
-        if (pincode) { updates.push('pincode = ?'); values.push(pincode); }
-        if (bio !== undefined) { updates.push('bio = ?'); values.push(bio); }
-        if (hourly_rate !== undefined) { updates.push('hourly_rate = ?'); values.push(hourly_rate); }
-        if (experience_years !== undefined) { updates.push('experience_years = ?'); values.push(experience_years); }
-        if (latitude !== undefined) { updates.push('latitude = ?'); values.push(latitude); }
-        if (longitude !== undefined) { updates.push('longitude = ?'); values.push(longitude); }
-        if (subject) { updates.push('subject = ?'); values.push(subject); }
+        if (phone) { updates.push(`phone = $${paramIndex++}`); values.push(phone); }
+        if (address) { updates.push(`address = $${paramIndex++}`); values.push(address); }
+        if (pincode) { updates.push(`pincode = $${paramIndex++}`); values.push(pincode); }
+        if (bio !== undefined) { updates.push(`bio = $${paramIndex++}`); values.push(bio); }
+        if (hourly_rate !== undefined) { updates.push(`hourly_rate = $${paramIndex++}`); values.push(hourly_rate); }
+        if (experience_years !== undefined) { updates.push(`experience_years = $${paramIndex++}`); values.push(experience_years); }
+        if (latitude !== undefined) { updates.push(`latitude = $${paramIndex++}`); values.push(latitude); }
+        if (longitude !== undefined) { updates.push(`longitude = $${paramIndex++}`); values.push(longitude); }
+        if (subject) { updates.push(`subject = $${paramIndex++}`); values.push(subject); }
 
         if (updates.length === 0) {
             return res.status(400).json({ msg: 'No fields to update' });
         }
 
         values.push(req.user.email);
-        await pool.query(`UPDATE teacher_login SET ${updates.join(', ')} WHERE email = ?`, values);
+        const pool = require('../db');
+        await pool.query(`UPDATE teacher_login SET ${updates.join(', ')} WHERE email = $${paramIndex}`, values);
 
         res.json({ success: true, message: 'Profile updated.' });
     } catch (err) {

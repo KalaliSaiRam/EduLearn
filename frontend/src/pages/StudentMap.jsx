@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import 'leaflet/dist/leaflet.css';
+import API_BASE from '../config';
 
 const StudentMap = () => {
   const [students, setStudents] = useState([]);
@@ -19,7 +20,7 @@ const StudentMap = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/profile/tutor', { headers: { 'x-auth-token': token } });
+        const res = await fetch(`${API_BASE}/api/profile/tutor`, { headers: { 'x-auth-token': token } });
         const data = await res.json();
         if (data.latitude && data.longitude) setTutorLocation({ lat: parseFloat(data.latitude), lng: parseFloat(data.longitude) });
       } catch (err) { console.error(err); }
@@ -30,7 +31,7 @@ const StudentMap = () => {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/tutor/mystudents-with-location', { headers: { 'x-auth-token': token } });
+        const res = await fetch(`${API_BASE}/api/tutor/mystudents-with-location`, { headers: { 'x-auth-token': token } });
         const data = await res.json();
         setStudents(Array.isArray(data) ? data : []);
       } catch (err) { console.error(err); }
@@ -146,7 +147,7 @@ const StudentMap = () => {
   const handleGeocodeMyLocation = async () => {
     setGeocoding(true);
     try {
-      const res = await fetch('http://localhost:5000/api/geocode/update-my-location', {
+      const res = await fetch(`${API_BASE}/api/geocode/update-my-location`, {
         method: 'POST', headers: { 'Content-Type': 'application/json', 'x-auth-token': token }
       });
       const data = await res.json();

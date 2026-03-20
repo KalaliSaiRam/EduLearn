@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Auth.css';
+import API_BASE from '../config';
 
 const Auth = () => {
   const [activeTab, setActiveTab] = useState('login');
@@ -26,8 +27,8 @@ const Auth = () => {
     setMsg({ type: '', text: '' });
     try {
       const endpoint = loginData.role === 'Student'
-        ? 'http://localhost:5000/api/auth/student/login'
-        : 'http://localhost:5000/api/auth/teacher/login';
+        ? `${API_BASE}/api/auth/student/login`
+        : `${API_BASE}/api/auth/teacher/login`;
 
       const res = await axios.post(endpoint, { email: loginData.email, password: loginData.password });
       localStorage.setItem('token', res.data.token);
@@ -53,7 +54,7 @@ const Auth = () => {
     setMsg({ type: '', text: '' });
     try {
       if (registerData.role === 'Student') {
-        const res = await axios.post('http://localhost:5000/api/auth/student/register', registerData);
+        const res = await axios.post(`${API_BASE}/api/auth/student/register`, registerData);
         setMsg({ type: 'success', text: res.data.msg });
         setActiveTab('login');
       } else {
@@ -70,7 +71,7 @@ const Auth = () => {
           }
           formData.append('certificate', certificate);
         }
-        const res = await axios.post('http://localhost:5000/api/auth/teacher/register', formData, {
+        const res = await axios.post(`${API_BASE}/api/auth/teacher/register`, formData, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
         setMsg({ type: 'success', text: res.data.msg });

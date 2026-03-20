@@ -45,7 +45,7 @@ router.post('/', upload.single('attachment'), async (req, res) => {
 
         const [result] = await db.execute(
             `INSERT INTO assignments (teacher_email, teacher_name, title, description, subject, due_date, max_marks, attachment_path)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id`,
             [teacherEmail, teacherName, title, description || null, subject || null, due_date || null, max_marks || 100, attachmentPath]
         );
 
@@ -62,7 +62,7 @@ router.post('/', upload.single('attachment'), async (req, res) => {
             );
         }
 
-        res.json({ success: true, message: 'Assignment created!', id: result.insertId });
+        res.json({ success: true, message: 'Assignment created!', id: result[0].id });
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Server Error creating assignment' });

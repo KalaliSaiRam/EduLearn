@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import './Assessment.css';
+import API_BASE from '../config';
 
 const ViewTest = () => {
   const [tests, setTests] = useState([]);
@@ -20,7 +21,7 @@ const ViewTest = () => {
           return;
         }
 
-        const res = await axios.get('http://localhost:5000/api/student-tests/tests', {
+        const res = await axios.get(`${API_BASE}/api/student-tests/tests`, {
           headers: { 'x-auth-token': token }
         });
 

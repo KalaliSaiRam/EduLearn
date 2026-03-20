@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Layout from '../components/Layout';
 import './StudentHome.css';
+import API_BASE from '../config';
 
 const StudentHome = () => {
   const user = JSON.parse(localStorage.getItem('user')) || {};
@@ -13,7 +14,7 @@ const StudentHome = () => {
   useEffect(() => {
     const fetchDashboard = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/dashboard/student', {
+        const res = await fetch(`${API_BASE}/api/dashboard/student`, {
           headers: { 'x-auth-token': token }
         });
         const data = await res.json();

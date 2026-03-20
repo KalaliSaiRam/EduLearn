@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import API_BASE from '../config';
 import './Layout.css';
 
 const Layout = ({ children, type }) => {
@@ -48,23 +49,23 @@ const Layout = ({ children, type }) => {
         if (!onNotifPage) {
           try {
             if (type === 'student' || user.role === 'student') {
-              const notifRes = await fetch('http://localhost:5000/api/student/notifications', { headers }).then(r => r.json());
+              const notifRes = await fetch(`${API_BASE}/api/student/notifications`, { headers }).then(r => r.json());
               if (Array.isArray(notifRes)) setUnreadNotifs(notifRes.filter(n => n.status === 'unread').length);
             } else {
-              const notifRes = await fetch('http://localhost:5000/api/tutor/notifications', { headers }).then(r => r.json());
+              const notifRes = await fetch(`${API_BASE}/api/tutor/notifications`, { headers }).then(r => r.json());
               if (Array.isArray(notifRes)) setUnreadNotifs(notifRes.length);
             }
           } catch (e) { /* ignore */ }
         } else {
           setUnreadNotifs(0);
           if (type === 'student' || user.role === 'student') {
-            try { await fetch('http://localhost:5000/api/student/notifications/mark-read', { method: 'POST', headers }); } catch (e) { /* ignore */ }
+            try { await fetch(`${API_BASE}/api/student/notifications/mark-read`, { method: 'POST', headers }); } catch (e) { /* ignore */ }
           }
         }
 
         if (!onMsgPage) {
           try {
-            const msgRes = await fetch('http://localhost:5000/api/messages/unread/count', { headers }).then(r => r.json());
+            const msgRes = await fetch(`${API_BASE}/api/messages/unread/count`, { headers }).then(r => r.json());
             if (msgRes.count !== undefined) setUnreadMsgs(msgRes.count);
           } catch (e) { /* ignore */ }
         } else {

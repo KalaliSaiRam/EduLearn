@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Layout from '../components/Layout';
 import './TutorDisplay.css';
+import API_BASE from '../config';
 
 const ProfessionalDisplay = () => {
   const [tutors, setTutors] = useState([]);
@@ -31,7 +32,7 @@ const ProfessionalDisplay = () => {
   const fetchTutors = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('http://localhost:5000/api/student/tutors?type=Professional', {
+      const res = await axios.get(`${API_BASE}/api/student/tutors?type=Professional`, {
         headers: { 'x-auth-token': token }
       });
       setTutors(res.data);
@@ -63,7 +64,7 @@ const ProfessionalDisplay = () => {
     setSubmitting(true);
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:5000/api/student/book-demo', {
+      await axios.post(`${API_BASE}/api/student/book-demo`, {
         ...formData,
         tutorEmail: selectedTutor.email
       }, {

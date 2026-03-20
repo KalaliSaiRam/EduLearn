@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement, Filler, BarElement } from 'chart.js';
 import { Line, Doughnut, Bar } from 'react-chartjs-2';
 import Layout from '../components/Layout';
+import API_BASE from '../config';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement, Filler, BarElement);
 
@@ -14,7 +15,7 @@ const StudentProgress = () => {
   useEffect(() => {
     const fetchProgress = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/student/progress', {
+        const res = await fetch(`${API_BASE}/api/student/progress`, {
           headers: { 'x-auth-token': token }
         });
         const d = await res.json();

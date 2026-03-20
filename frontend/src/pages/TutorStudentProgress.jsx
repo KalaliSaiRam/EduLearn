@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Layout from '../components/Layout';
 import './Progress.css';
+import API_BASE from '../config';
 
 const TutorStudentProgress = () => {
   const [data, setData] = useState(null);
@@ -18,7 +19,7 @@ const TutorStudentProgress = () => {
            return;
         }
 
-        const res = await axios.get('http://localhost:5000/api/tutor/student-progress', {
+        const res = await axios.get(`${API_BASE}/api/tutor/student-progress`, {
           headers: {
             'x-auth-token': token
           }

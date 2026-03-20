@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import './Profile.css';
+import API_BASE from '../config';
 
 const StudentProfile = () => {
   const [profile, setProfile] = useState(null);
@@ -17,7 +18,7 @@ const StudentProfile = () => {
   const fetchProfile = async () => {
     try {
       if (!token) { navigate('/login'); return; }
-      const res = await fetch('http://localhost:5000/api/profile/student', {
+      const res = await fetch(`${API_BASE}/api/profile/student`, {
         headers: { 'x-auth-token': token }
       });
       const data = await res.json();
@@ -38,7 +39,7 @@ const StudentProfile = () => {
   const handleSave = async () => {
     setSaving(true);
     try {
-      const res = await fetch('http://localhost:5000/api/profile/student', {
+      const res = await fetch(`${API_BASE}/api/profile/student`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'x-auth-token': token },
         body: JSON.stringify(form)
@@ -49,7 +50,7 @@ const StudentProfile = () => {
         if (form.address !== profile.address || form.city !== profile.city || form.pincode !== profile.pincode) {
           setGeocoding(true);
           try {
-            await fetch('http://localhost:5000/api/geocode/update-my-location', {
+            await fetch(`${API_BASE}/api/geocode/update-my-location`, {
               method: 'POST', headers: { 'Content-Type': 'application/json', 'x-auth-token': token }
             });
           } catch (e) { /* non-blocking */ }
@@ -128,7 +129,7 @@ const StudentProfile = () => {
                   <textarea rows={3} value={form.bio} onChange={e => setForm({...form, bio: e.target.value})}
                     placeholder="Tell tutors about yourself, your learning goals, and how you prefer to study..." className="profile-edit-input" />
                 ) : (
-                  <p style={{ color: profile.bio ? 'var(--text-main)' : 'var(--text-light)', fontStyle: profile.bio ? 'normal' : 'italic', fontSize: '0.95rem', lineHeight: 1.6 }}>
+                  <p className={`profile-bio-text ${!profile.bio ? 'empty' : ''}`}>
                     {profile.bio || 'No bio added yet. Click "Edit Profile" to add one!'}
                   </p>
                 )}
@@ -202,14 +203,16 @@ const StudentProfile = () => {
                 )}
               </div>
 
-              {/* Assigned Tutor */}
               {profile.teacher_name && (
                 <div className="assigned-tutor-banner">
                   <div className="tutor-banner-icon"><i className="fas fa-chalkboard-teacher"></i></div>
                   <div className="tutor-banner-content">
                     <h4>Assigned Tutor</h4>
                     <p><strong>{profile.teacher_name}</strong> ({profile.teacher_subject})</p>
-                    <p style={{ fontSize: '0.85rem', marginTop: '0.25rem' }}><i className="fas fa-envelope" style={{ marginRight: '0.35rem' }}></i>{profile.teacher_email}</p>
+                    <div className="tutor-email">
+                      <i className="fas fa-envelope"></i>
+                      <span>{profile.teacher_email}</span>
+                    </div>
                   </div>
                 </div>
               )}

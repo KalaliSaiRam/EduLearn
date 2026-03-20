@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Layout from '../components/Layout';
+import API_BASE from '../config';
 
 const Messages = () => {
   const [conversations, setConversations] = useState([]);
@@ -38,7 +39,7 @@ const Messages = () => {
 
     // Validate user exists in the system
     try {
-      const res = await fetch(`http://localhost:5000/api/profile/public/${email}`, {
+      const res = await fetch(`${API_BASE}/api/profile/public/${email}`, {
         headers: { 'x-auth-token': token }
       });
       if (!res.ok) {
@@ -82,7 +83,7 @@ const Messages = () => {
 
   const fetchConversations = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/messages/conversations', {
+      const res = await fetch(`${API_BASE}/api/messages/conversations`, {
         headers: { 'x-auth-token': token }
       });
       const data = await res.json();
@@ -93,7 +94,7 @@ const Messages = () => {
 
   const fetchMessages = async (email) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/messages/${email}`, {
+      const res = await fetch(`${API_BASE}/api/messages/${email}`, {
         headers: { 'x-auth-token': token }
       });
       const data = await res.json();
@@ -105,7 +106,7 @@ const Messages = () => {
     if (!newMessage.trim() || !selectedChat) return;
     setSending(true);
     try {
-      const res = await fetch('http://localhost:5000/api/messages', {
+      const res = await fetch(`${API_BASE}/api/messages`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'x-auth-token': token },
         body: JSON.stringify({ receiver_email: selectedChat.other_email, message_text: newMessage })
@@ -127,7 +128,7 @@ const Messages = () => {
     if (!newChatEmail.trim()) return;
     // Validate first, then close modal only if user found
     try {
-      const res = await fetch(`http://localhost:5000/api/profile/public/${newChatEmail.trim()}`, {
+      const res = await fetch(`${API_BASE}/api/profile/public/${newChatEmail.trim()}`, {
         headers: { 'x-auth-token': token }
       });
       if (!res.ok) {

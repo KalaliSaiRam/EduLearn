@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
+import API_BASE from '../config';
 
 const Schedule = () => {
   const [sessions, setSessions] = useState([]);
@@ -22,7 +23,7 @@ const Schedule = () => {
       // Fetch accepted students for the create form
       const fetchStudents = async () => {
         try {
-          const res = await fetch('http://localhost:5000/api/tutor/mystudents-with-location', {
+          const res = await fetch(`${API_BASE}/api/tutor/mystudents-with-location`, {
             headers: { 'x-auth-token': token }
           });
           const data = await res.json();
@@ -38,7 +39,7 @@ const Schedule = () => {
     if (isTutor) {
       const fetchSubject = async () => {
         try {
-          const res = await fetch('http://localhost:5000/api/profile/tutor', { headers: { 'x-auth-token': token } });
+          const res = await fetch(`${API_BASE}/api/profile/tutor`, { headers: { 'x-auth-token': token } });
           const data = await res.json();
           if (data.subject) setCreateForm(prev => ({ ...prev, subject: data.subject }));
         } catch (err) { console.error(err); }
@@ -50,7 +51,7 @@ const Schedule = () => {
   const fetchSessions = async () => {
     try {
       const endpoint = isTutor ? '/api/schedule/tutor' : '/api/schedule/student';
-      const res = await fetch(`http://localhost:5000${endpoint}`, { headers: { 'x-auth-token': token } });
+      const res = await fetch(`${API_BASE}${endpoint}`, { headers: { 'x-auth-token': token } });
       const data = await res.json();
       setSessions(Array.isArray(data) ? data : []);
     } catch (err) { console.error(err); }
@@ -59,7 +60,7 @@ const Schedule = () => {
 
   const updateStatus = async (id, status) => {
     try {
-      await fetch(`http://localhost:5000/api/schedule/${id}/status`, {
+      await fetch(`${API_BASE}/api/schedule/${id}/status`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'x-auth-token': token },
         body: JSON.stringify({ status })
@@ -75,7 +76,7 @@ const Schedule = () => {
     }
     setCreating(true);
     try {
-      const res = await fetch('http://localhost:5000/api/schedule', {
+      const res = await fetch(`${API_BASE}/api/schedule`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'x-auth-token': token },
         body: JSON.stringify(createForm)

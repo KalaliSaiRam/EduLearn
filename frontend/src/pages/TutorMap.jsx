@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import 'leaflet/dist/leaflet.css';
+import API_BASE from '../config';
 
 const TutorMap = () => {
   const [tutors, setTutors] = useState([]);
@@ -25,7 +26,7 @@ const TutorMap = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/profile/student', { headers: { 'x-auth-token': token } });
+        const res = await fetch(`${API_BASE}/api/profile/student`, { headers: { 'x-auth-token': token } });
         const data = await res.json();
         setStudentProfile(data);
         if (data.latitude && data.longitude) setStudentLocation({ lat: parseFloat(data.latitude), lng: parseFloat(data.longitude) });
@@ -37,7 +38,7 @@ const TutorMap = () => {
   useEffect(() => {
     const fetchTutors = async () => {
       try {
-        const url = filterType ? `http://localhost:5000/api/student/tutors?type=${filterType}` : 'http://localhost:5000/api/student/tutors';
+        const url = filterType ? `${API_BASE}/api/student/tutors?type=${filterType}` : `${API_BASE}/api/student/tutors`;
         const res = await fetch(url, { headers: { 'x-auth-token': token } });
         const data = await res.json();
         setTutors(Array.isArray(data) ? data : []);
@@ -203,7 +204,7 @@ const TutorMap = () => {
   const handleGeocodeMyLocation = async () => {
     setGeocoding(true);
     try {
-      const res = await fetch('http://localhost:5000/api/geocode/update-my-location', {
+      const res = await fetch(`${API_BASE}/api/geocode/update-my-location`, {
         method: 'POST', headers: { 'Content-Type': 'application/json', 'x-auth-token': token }
       });
       const data = await res.json();
@@ -219,7 +220,7 @@ const TutorMap = () => {
     if (!bookingTutor) return;
     setBookingLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/student/book-demo', {
+      const res = await fetch(`${API_BASE}/api/student/book-demo`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'x-auth-token': token },
         body: JSON.stringify({

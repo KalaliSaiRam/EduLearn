@@ -159,10 +159,10 @@ router.post('/create-test', async (req, res) => {
 
             // Insert into tests table
             const [testResult] = await connection.execute(
-                `INSERT INTO tests (teacher_name, teacher_email, subject, test_title, description) VALUES (?, ?, ?, ?, ?)`,
+                `INSERT INTO tests (teacher_name, teacher_email, subject, test_title, description) VALUES (?, ?, ?, ?, ?) RETURNING id`,
                 [teacherName, teacherEmail, subject, test_title, description]
             );
-            const testId = testResult.insertId;
+            const testId = testResult[0].id;
 
             // Insert questions
             for (let i = 0; i < questions.length; i++) {

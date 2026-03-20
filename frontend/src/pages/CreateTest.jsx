@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Layout from '../components/Layout';
 import './Assessment.css';
+import API_BASE from '../config';
 
 const CreateTest = () => {
   const [formData, setFormData] = useState({
@@ -19,7 +20,7 @@ const CreateTest = () => {
     const fetchSubject = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('http://localhost:5000/api/profile/tutor', {
+        const res = await axios.get(`${API_BASE}/api/profile/tutor`, {
           headers: { 'x-auth-token': token }
         });
         if (res.data.subject) {
@@ -78,7 +79,7 @@ const CreateTest = () => {
         questions: validQuestions
       };
 
-      const res = await axios.post('http://localhost:5000/api/tutor/create-test', payload, {
+      const res = await axios.post(`${API_BASE}/api/tutor/create-test`, payload, {
         headers: { 'x-auth-token': token }
       });
 

@@ -69,7 +69,7 @@ router.post('/student/register', async (req, res) => {
     }
 
     // Insert user with location
-    const sql = `INSERT INTO student_login (name, email, phone, gender, class, address, city, pincode, password, latitude, longitude) 
+    const sql = `INSERT INTO student_login (name, email, phone, gender, "class", address, city, pincode, password, latitude, longitude) 
                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
     await pool.query(sql, [name, email, phone, gender, studentClass, address, city, pincode, hashedPassword, latitude, longitude]);
 
@@ -121,7 +121,7 @@ router.post('/student/login', async (req, res) => {
 
     jwt.sign(
       payload,
-      process.env.JWT_SECRET || 'supersecretjwtkey_edulearning',
+      process.env.JWT_SECRET,
       { expiresIn: '10h' },
       (err, token) => {
         if (err) throw err;
@@ -175,7 +175,7 @@ router.post('/teacher/register', upload.single('certificate'), async (req, res) 
 
     // Insert user with location
     const sql = `INSERT INTO teacher_login (name, email, phone, gender, type, subject, address, pincode, password, certificate_path, latitude, longitude) 
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id`;
     await pool.query(sql, [name, email, phone, gender, type, subject, address, pincode, hashedPassword, certificate_path, latitude, longitude]);
 
     res.status(201).json({ msg: 'Registration successful! You can now login.' });
@@ -225,7 +225,7 @@ router.post('/teacher/login', async (req, res) => {
 
     jwt.sign(
       payload,
-      process.env.JWT_SECRET || 'supersecretjwtkey_edulearning',
+      process.env.JWT_SECRET,
       { expiresIn: '10h' },
       (err, token) => {
         if (err) throw err;

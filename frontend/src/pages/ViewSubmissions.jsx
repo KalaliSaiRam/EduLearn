@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Layout from '../components/Layout';
 import './Assessment.css';
+import API_BASE from '../config';
 
 const ViewSubmissions = () => {
   const [testTitles, setTestTitles] = useState([]);
@@ -31,7 +32,7 @@ const ViewSubmissions = () => {
       const token = localStorage.getItem('token');
       if (!token) return;
 
-      const res = await axios.get('http://localhost:5000/api/tutor/tests', {
+      const res = await axios.get(`${API_BASE}/api/tutor/tests`, {
         headers: { 'x-auth-token': token }
       });
       setTestTitles(res.data);
@@ -47,7 +48,7 @@ const ViewSubmissions = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const res = await axios.get(`http://localhost:5000/api/tutor/submissions/${encodeURIComponent(testTitle)}`, {
+      const res = await axios.get(`${API_BASE}/api/tutor/submissions/${encodeURIComponent(testTitle)}`, {
         headers: { 'x-auth-token': token }
       });
       
@@ -82,7 +83,7 @@ const ViewSubmissions = () => {
       setGradingStatus({ id: submissionId, status: 'saving' });
       const token = localStorage.getItem('token');
       
-      await axios.post('http://localhost:5000/api/tutor/grade-submission', 
+      await axios.post(`${API_BASE}/api/tutor/grade-submission`, 
         { submission_id: submissionId, marks: parseInt(marks) },
         { headers: { 'x-auth-token': token } }
       );
@@ -144,7 +145,7 @@ const ViewSubmissions = () => {
                 
                 <div className="submission-actions d-flex align-items-center gap-4">
                   <a 
-                    href={`http://localhost:5000/${sub.pdf_path}`} 
+                    href={`${API_BASE}/${sub.pdf_path}`} 
                     target="_blank" 
                     rel="noreferrer"
                     className="btn btn-secondary btn-sm"

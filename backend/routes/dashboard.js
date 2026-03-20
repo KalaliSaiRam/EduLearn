@@ -16,7 +16,7 @@ router.get('/student', async (req, res) => {
         // Upcoming sessions
         const [upcomingSessions] = await db.execute(
             `SELECT COUNT(*) AS count FROM sessions 
-             WHERE student_email = ? AND session_date >= CURDATE() AND status = 'scheduled'`,
+             WHERE student_email = ? AND session_date >= CURRENT_DATE AND status = 'scheduled'`,
             [email]
         );
 
@@ -69,7 +69,7 @@ router.get('/student', async (req, res) => {
             SELECT s.*, tl.name AS teacher_name 
             FROM sessions s
             JOIN teacher_login tl ON s.teacher_email = tl.email
-            WHERE s.student_email = ? AND s.session_date >= CURDATE() AND s.status = 'scheduled'
+            WHERE s.student_email = ? AND s.session_date >= CURRENT_DATE AND s.status = 'scheduled'
             ORDER BY s.session_date ASC, s.start_time ASC LIMIT 1
         `, [email]);
 
@@ -110,14 +110,14 @@ router.get('/tutor', async (req, res) => {
 
         // Today's sessions
         const [todaySessions] = await db.execute(
-            `SELECT COUNT(*) AS count FROM sessions WHERE teacher_email = ? AND session_date = CURDATE() AND status = 'scheduled'`,
+            `SELECT COUNT(*) AS count FROM sessions WHERE teacher_email = ? AND session_date = CURRENT_DATE AND status = 'scheduled'`,
             [email]
         );
 
         // Upcoming sessions this week
         const [weekSessions] = await db.execute(
             `SELECT COUNT(*) AS count FROM sessions 
-             WHERE teacher_email = ? AND session_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY) AND status = 'scheduled'`,
+             WHERE teacher_email = ? AND session_date BETWEEN CURRENT_DATE AND CURRENT_DATE + INTERVAL '7 days' AND status = 'scheduled'`,
             [email]
         );
 
@@ -164,7 +164,7 @@ router.get('/tutor', async (req, res) => {
             SELECT s.*, sl.name AS student_name 
             FROM sessions s
             JOIN student_login sl ON s.student_email = sl.email
-            WHERE s.teacher_email = ? AND s.session_date >= CURDATE() AND s.status = 'scheduled'
+            WHERE s.teacher_email = ? AND s.session_date >= CURRENT_DATE AND s.status = 'scheduled'
             ORDER BY s.session_date ASC, s.start_time ASC LIMIT 1
         `, [email]);
 

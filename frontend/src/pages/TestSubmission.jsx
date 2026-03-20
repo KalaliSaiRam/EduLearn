@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import './Assessment.css';
+import API_BASE from '../config';
 
 const TestSubmission = () => {
   const { testId } = useParams();
@@ -25,7 +26,7 @@ const TestSubmission = () => {
           return;
         }
 
-        const res = await axios.get(`http://localhost:5000/api/student-tests/${testId}/questions`, {
+        const res = await axios.get(`${API_BASE}/api/student-tests/${testId}/questions`, {
           headers: { 'x-auth-token': token }
         });
 
@@ -81,7 +82,7 @@ const TestSubmission = () => {
       formData.append('pdf_file', file);
       formData.append('test_id', testId);
 
-      const res = await axios.post('http://localhost:5000/api/student-tests/submit', formData, {
+      const res = await axios.post(`${API_BASE}/api/student-tests/submit`, formData, {
         headers: { 
           'x-auth-token': token,
           'Content-Type': 'multipart/form-data'

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
+import API_BASE from '../config';
 
 const Assignments = () => {
   const [assignments, setAssignments] = useState([]);
@@ -17,7 +18,7 @@ const Assignments = () => {
     if (isTutor) {
       const fetchSubject = async () => {
         try {
-          const res = await fetch('http://localhost:5000/api/profile/tutor', { headers: { 'x-auth-token': token } });
+          const res = await fetch(`${API_BASE}/api/profile/tutor`, { headers: { 'x-auth-token': token } });
           const data = await res.json();
           if (data.subject) setNewAssignment(prev => ({ ...prev, subject: data.subject }));
         } catch (err) { console.error(err); }
@@ -29,7 +30,7 @@ const Assignments = () => {
   const fetchAssignments = async () => {
     try {
       const endpoint = isTutor ? '/api/assignments/tutor' : '/api/assignments/student';
-      const res = await fetch(`http://localhost:5000${endpoint}`, { headers: { 'x-auth-token': token } });
+      const res = await fetch(`${API_BASE}${endpoint}`, { headers: { 'x-auth-token': token } });
       const data = await res.json();
       setAssignments(data);
     } catch (err) { console.error(err); }
@@ -43,7 +44,7 @@ const Assignments = () => {
     const formData = new FormData();
     formData.append('submission', file);
     try {
-      await fetch(`http://localhost:5000/api/assignments/${assignmentId}/submit`, {
+      await fetch(`${API_BASE}/api/assignments/${assignmentId}/submit`, {
         method: 'POST',
         headers: { 'x-auth-token': token },
         body: formData
@@ -71,7 +72,7 @@ const Assignments = () => {
     Object.entries(newAssignment).forEach(([k, v]) => formData.append(k, v));
     if (createFile) formData.append('attachment', createFile);
     try {
-      await fetch('http://localhost:5000/api/assignments', {
+      await fetch(`${API_BASE}/api/assignments`, {
         method: 'POST',
         headers: { 'x-auth-token': token },
         body: formData

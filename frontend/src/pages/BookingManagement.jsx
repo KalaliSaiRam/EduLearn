@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
+import API_BASE from '../config';
 
 const BookingManagement = () => {
   const [bookings, setBookings] = useState([]);
@@ -17,7 +18,7 @@ const BookingManagement = () => {
   const fetchBookings = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/student/bookings', {
+      const res = await fetch(`${API_BASE}/api/student/bookings`, {
         headers: { 'x-auth-token': token }
       });
       const data = await res.json();
@@ -37,7 +38,7 @@ const BookingManagement = () => {
     if (!showReview) return;
     setSubmitting(true);
     try {
-      const res = await fetch('http://localhost:5000/api/reviews', {
+      const res = await fetch(`${API_BASE}/api/reviews`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'x-auth-token': token },
         body: JSON.stringify({

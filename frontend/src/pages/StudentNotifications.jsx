@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Layout from '../components/Layout';
 import './Notifications.css';
+import API_BASE from '../config';
 
 const StudentNotifications = () => {
   const [notifications, setNotifications] = useState([]);
@@ -22,7 +23,7 @@ const StudentNotifications = () => {
         return;
       }
 
-      const res = await axios.get('http://localhost:5000/api/student/notifications', {
+      const res = await axios.get(`${API_BASE}/api/student/notifications`, {
         headers: { 'x-auth-token': token }
       });
 
@@ -39,7 +40,7 @@ const StudentNotifications = () => {
   const handleMarkRead = async (notifId = null, markAll = false) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:5000/api/student/notifications/mark-read', 
+      await axios.post(`${API_BASE}/api/student/notifications/mark-read`, 
         { notif_id: notifId, mark_all: markAll },
         { headers: { 'x-auth-token': token } }
       );
