@@ -1,0 +1,245 @@
+/* src/pages/Profile.css */
+
+.profile-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.profile-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.profile-cover {
+  height: 160px;
+  background: linear-gradient(135deg, var(--bg-main) 0%, var(--primary-light) 50%, var(--primary) 100%);
+  position: relative;
+}
+
+.profile-avatar-container {
+  position: absolute;
+  bottom: -55px;
+  left: 2rem;
+}
+
+.profile-avatar {
+  width: 110px;
+  height: 110px;
+  border-radius: var(--radius-full);
+  border: 4px solid var(--bg-card);
+  background: var(--primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.75rem;
+  font-weight: 700;
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
+}
+
+.profile-actions {
+  position: absolute;
+  bottom: 1rem;
+  right: 1.25rem;
+}
+
+.profile-body {
+  padding: 4.5rem 2rem 2rem;
+}
+
+.profile-name {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 0.25rem;
+}
+
+.profile-role {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-bottom: 1.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.profile-role i {
+  color: var(--primary);
+}
+
+/* ─── Stats Grid ───────────────────────────────────── */
+.profile-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.profile-stat-card {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1rem 0.75rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  transition: var(--transition-fast);
+}
+
+.profile-stat-card:hover {
+  border-color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.profile-stat-card i {
+  font-size: 1.25rem;
+  margin-bottom: 0.15rem;
+}
+
+.profile-stat-card .stat-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.profile-stat-card .stat-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+/* ─── Info Sections ────────────────────────────────── */
+.info-section {
+  margin-bottom: 2rem;
+}
+
+.info-section-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--bg-input);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.info-section-title i {
+  color: var(--primary);
+  font-size: 0.9rem;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+@media (max-width: 600px) {
+  .info-grid { grid-template-columns: 1fr; }
+  .profile-body { padding: 4rem 1.25rem 1.5rem; }
+  .profile-avatar-container { left: 1.25rem; }
+  .profile-stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.3rem;
+}
+
+.info-value {
+  font-size: 0.95rem;
+  color: var(--text-main);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+
+/* ─── Edit Mode ────────────────────────────────────── */
+.profile-edit-input {
+  width: 100%;
+  padding: 0.6rem 0.85rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-input);
+  color: var(--text-main);
+  font-size: 0.9rem;
+  font-family: inherit;
+  transition: var(--transition-fast);
+  outline: none;
+  resize: vertical;
+}
+
+.profile-edit-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
+}
+
+.profile-edit-input::placeholder {
+  color: var(--text-light);
+}
+
+textarea.profile-edit-input {
+  min-height: 80px;
+  line-height: 1.5;
+}
+
+/* ─── Assigned Tutor / Verified Banner ─────────────── */
+.assigned-tutor-banner {
+  background: var(--info-bg);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin-top: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.tutor-banner-icon {
+  font-size: 1.25rem;
+  color: var(--info);
+  background: white;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
+}
+
+.tutor-banner-content h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0 0 0.2rem 0;
+}
+
+.tutor-banner-content p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  line-height: 1.4;
+}

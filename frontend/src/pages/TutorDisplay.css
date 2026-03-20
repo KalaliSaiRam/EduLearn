@@ -1,0 +1,222 @@
+/* src/pages/TutorDisplay.css */
+
+.tutor-display-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.tutor-display-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.tutor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.tutor-profile-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+}
+
+.tutor-profile-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-light);
+}
+
+.tutor-profile-header {
+  height: 100px;
+  background: linear-gradient(135deg, var(--bg-main) 0%, var(--primary-light) 100%);
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.professional-header {
+  background: linear-gradient(135deg, var(--bg-main) 0%, #e0e7ff 100%);
+}
+
+.peer-header {
+  background: linear-gradient(135deg, var(--bg-main) 0%, #fef3c7 100%);
+}
+
+.tutor-avatar {
+  width: 80px;
+  height: 80px;
+  background: var(--primary);
+  color: white;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 700;
+  border: 4px solid var(--bg-card);
+  position: absolute;
+  bottom: -40px;
+  box-shadow: var(--shadow-sm);
+}
+
+.peer-header .tutor-avatar {
+  background: var(--warning);
+}
+
+.tutor-profile-body {
+  padding: 3.5rem 1.5rem 1.5rem;
+  text-align: center;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.tutor-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 0.25rem;
+}
+
+.tutor-subject {
+  display: inline-block;
+  background: var(--bg-main);
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+
+.tutor-details {
+  text-align: left;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.detail-item i {
+  color: var(--text-light);
+  width: 16px;
+  text-align: center;
+}
+
+.req-demo-btn {
+  width: 100%;
+}
+
+/* Custom Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-content {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 500px;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  animation: modalIn 0.3s ease-out;
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modal-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-main);
+}
+
+.modal-header h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0;
+}
+
+.close-modal-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.close-modal-btn:hover {
+  color: var(--danger);
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.modal-body .form-group {
+  margin-bottom: 1rem;
+}
+
+.modal-body label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.modal-body input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.tutor-info-alert {
+  background: var(--info-bg);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  color: var(--info);
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  margin: 1rem 0;
+}

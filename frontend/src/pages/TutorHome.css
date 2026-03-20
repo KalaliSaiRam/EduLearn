@@ -1,0 +1,11 @@
+/* ═══════════════════════════════════════
+   Tutor Home (Peer + Professional) CSS
+   ═══════════════════════════════════════ */
+
+/* All styles are shared from StudentHome.css — 
+   Tutor homes use the same stat-card, action-card, 
+   dashboard-row, etc. classes */
+
+/* Import the student home styles since they share all layout */
+/* The classes like .stat-card, .dashboard-row, .action-grid, etc. 
+   are defined in StudentHome.css */
